@@ -1,4 +1,4 @@
-// Day 1: Variables and data Types
+// Day 1: Variables and data Types, Thank You To Hitesh Choudhary
 
 // Tasks/Activities
 
