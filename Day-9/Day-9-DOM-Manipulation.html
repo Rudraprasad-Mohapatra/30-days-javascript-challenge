@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Chai Change Text Content</title>
+    <style>
+        .highlight {
+            background-color: yellow;
+            color: red;
+            padding: 10px;
+            border: 2px solid black;
+        }
+        #myElement {
+            width: 200px;
+            height: 100px;
+            border: 2px solid black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+    </style>
+</head>
+
+<body style="display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap;">
+    <p id="myChaiElement">Chai Original Text</p>
+    <button onclick="changeText()">Chai Change Text</button>
+    <button class="chaiButton" onclick="changeBackgroundColor()">Chai Change Background Color</button>
+    <button onclick="chaiAppenDiv()">Append Text content Div</button>
+
+    <ul id="myChaiList">
+        <li>Chai 1</li>
+        <li>Chai 2</li>
+        <li>Chai 3</li>
+    </ul>
+    <button onclick="addChaiListItem()"> Add New Chai Item</button>
+    <button id="clickToRemove" onclick="removeChaiElement()"> Click To Remove Me</button>
+
+    <button onclick="removeChaiLastChild()">Remove Last Child of Chai List</button>
+    <img id="HiteshSirImage" src="https://avatars.githubusercontent.com/u/11613311?v=4" alt="ChaiImage" height="100px"
+        width="100px">
+    <button onclick="changeChaiImageSource()">Change Chai Image Source</button>
+
+    <div id="myDiv">This is a Chai div element.</div>
+    <button onclick="addClass()">Add Class</button>
+    <button onclick="removeClass()">Remove Class</button>
+    <button onclick="toggleClass()">Toggle Class</button>
+
+    <p id="myParagraph">Original Chai Text.</p>
+    <button id="myButton">Change Chai Text</button>
+
+    <div id="myElement">Hover over me I am Chi Aur Code !</div>
+</body>
+<script src="./DOM-Manipulation.js"></script>
+
+</html>
