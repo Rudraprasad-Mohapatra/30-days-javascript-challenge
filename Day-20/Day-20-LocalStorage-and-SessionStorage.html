@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LocalStorage Example</title>
+    <style>
+        form {
+            margin: 20px 0;
+        }
+
+        .user-info {
+            margin: 20px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>LocalStorage Example</h1>
+    <button onclick="saveToLocalStorage()">Save to LocalStorage</button>
+    <button onclick="retrieveFromLocalStorage()">Retrieve from LocalStorage</button>
+
+    <h1>User Info Form</h1>
+    <form id="userForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+        <br><br>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <div class="user-info" id="userInfo">
+        <!-- User info will be displayed here -->
+    </div>
+
+    <h1>Remove Item from LocalStorage</h1>
+    <button id="removeButton">Remove Item</button>
+
+    <button id="saveSessionButton">Save to Session Storage</button>
+    <button id="retrieveSessionButton">Retrieve from Session Storage</button>
+
+    <br>
+    <h1>SessionStorage Object Example</h1>
+    <button id="saveButton">Save Object to SessionStorage</button>
+    <button id="retrieveButton">Retrieve Object from SessionStorage</button>
+
+    <br>
+    <h1>SessionStorage Form Example</h1>
+    <form id="sessionUserForm">
+        <label for="sessionName">Name:</label>
+        <input type="text" id="sessionName" name="sessionName" required>
+        <br><br>
+        <label for="sessionEmail">Email:</label>
+        <input type="email" id="sessionEmail" name="sessionEmail" required>
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <div class="user-info" id="sessionUserInfo">
+        <!-- User info will be displayed here -->
+    </div>
+
+    <h1>SessionStorage Remove Example</h1>
+    <button id="removeItemButton">Remove Item from SessionStorage</button>
+    <br>
+
+    <h1>LocalStorage and SessionStorage Example</h1>
+    <button id="saveAndRetrieveButton">Save and Retrieve Data</button>
+
+    <br>
+    <h1>Clear LocalStorage and SessionStorage Example</h1>
+    <button id="clearStorageButton">Clear All Storage</button>
+    <div id="storageStatus"></div>
+    <script src="./Day-20-LocalStorage-and-SessionStorage.js"></script>
+</body>
+
+</html>
