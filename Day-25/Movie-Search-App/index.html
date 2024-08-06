@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Search App</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Movie Search App</h1>
+        <input type="text" id="search-input" placeholder="Search for a movie...">
+        <button id="search-button">Search</button>
+        <div id="movie-results"></div>
+        <div id="movie-details"></div>
+    </div>
+
+        <!-- Modal structure -->
+        <div id="movie-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <h2 id="modal-title"></h2>
+                <p><strong>Director:</strong> <span id="modal-director"></span></p>
+                <p><strong>Actors:</strong> <span id="modal-actors"></span></p>
+                <p><strong>Plot:</strong> <span id="modal-plot"></span></p>
+            </div>
+        </div>
+    <script src="../Day-25-Project2-Movie-Search-App.js"></script>
+</body>
+</html>
