@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Application</title>
+    <link rel="stylesheet" href="./css/styles.css">
+</head>
+
+<body>
+    <div id="chat-app">
+        <!-- Username form -->
+        <div id="username-form" class="auth-form">
+            <input type="text" id="username-input" placeholder="Enter your username..." />
+            <button id="join-button">Join Chat</button>
+        </div>
+
+        <!-- Chat Application -->
+        <div id="chat-window">
+            <!-- Chat messages will appear here -->
+        </div>
+        <div id="input-area">
+            <input type="text" id="message-input" placeholder="Type a message...">
+            <button id="send-button">Send</button>
+        </div>
+    </div>
+</body>
+<script src="../Day-26-Project-3-Chat-Application.js"></script>
+<script>
+    let socket;
+    let username;
+
+    // Initialize WebSocket connection
+    function initWebSocket() {
+        socket = new WebSocket('ws://localhost:8080');
+
+        socket.addEventListener('open', () => {
+            console.log('Connected to WebSocket server');
+        });
+
+        socket.addEventListener('message', (event) => {
+            handleMessage(event.data);
+        });
+
+        socket.addEventListener('close', () => {
+            console.log('Disconnected from WebSocket server');
+        });
+
+        socket.addEventListener('error', (error) => {
+            console.error(`WebSocket error: ${error}`);
+        });
+    }
+
+    function handleMessage(message) {
+        const chatWindow = document.getElementById('chat-window');
+        const messageElement = document.createElement('div');
+        messageElement.classList.add('message');
+
+        // Assuming message format: "username: message"
+        const [user, ...msgParts] = message.split(':');
+        const msg = msgParts.join(':').trim();
+
+        if (user.trim() === username) {
+            messageElement.classList.add('user');
+        } else {
+            messageElement.classList.add('other');
+        }
+        messageElement.innerHTML = `<strong>${user.trim()}:</strong> ${msg}`;
+        chatWindow.appendChild(messageElement);
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+        console.log(`Received message: ${message}`);
+    }
+
+    function sendMessage(message) {
+        if (socket && socket.readyState === WebSocket.OPEN) {
+            socket.send(message);
+        } else {
+            console.error('WebSocket is not open. Cannot send message.');
+        }
+    }
+
+    // Event listener for the send button
+    document.getElementById('send-button').addEventListener('click', () => {
+        username = document.getElementById('username-input').value.trim();
+        const input = document.getElementById('message-input');
+        const message = input.value.trim();
+        if (message) {
+            sendMessage(message);
+            handleMessage(`${username}: ${message} .`);
+            input.value = '';
+        }
+    });
+
+    // Event listener for the join button
+    document.getElementById('join-button').addEventListener('click', () => {
+        username = document.getElementById('username-input').value.trim();
+        if (username) {
+            document.getElementById('username-form').classList.add('hidden');
+            document.getElementById('chat-window').classList.remove('hidden');
+            document.getElementById('input-area').classList.remove('hidden');
+            initWebSocket();
+        } else {
+            alert('Please enter a username.');
+        }
+    });
+
+    // Initialize WebSocket connection when the page loads
+    document.addEventListener('DOMContentLoaded', () => {
+
+    });
+
+</script>
+
+</html>
