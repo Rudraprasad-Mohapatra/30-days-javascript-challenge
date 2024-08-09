@@ -1,0 +1,70 @@
+/* General container styling */
+.container {
+    width: 80%;
+    margin: 0 auto;
+}
+
+/* Checkout Form Styling */
+.checkout {
+    margin: 20px 0;
+    padding: 20px;
+    border: 1px solid #FF9933; /* Bhagwa border */
+    border-radius: 10px;
+    background-color: #f9f9f9;
+}
+
+.checkout h2 {
+    color: #FF9933; /* Bhagwa color */
+    margin-bottom: 20px;
+}
+
+.checkout form {
+    display: flex;
+    flex-direction: column;
+}
+
+.checkout label {
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.checkout input,
+.checkout textarea {
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.checkout button {
+    padding: 10px;
+    background-color: #FF9933; /* Bhagwa background */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.checkout button:hover {
+    background-color: #e68a00; /* Slightly darker Bhagwa color */
+}
+
+/* Order Summary Styling */
+.order-summary {
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #FF9933; /* Bhagwa border */
+    border-radius: 10px;
+    background-color: #f9f9f9;
+}
+
+.order-summary h2 {
+    color: #FF9933; /* Bhagwa color */
+}
+
+.order-summary p {
+    color: #333;
+    font-size: 18px;
+}

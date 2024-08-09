@@ -1,0 +1,139 @@
+/* Basic reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #1a1a1a; /* Dark background */
+  color: #e0e0e0; /* Light text color */
+  padding: 20px;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+header h1 {
+  color: #ff9933; /* Bhagwa color for header text */
+}
+
+.product-listing {
+  margin-bottom: 40px;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.product-item {
+  background-color: #2c2c2c; /* Dark background for product cards */
+  padding: 20px;
+  border: 1px solid #ff9933; /* Bhagwa border */
+  border-radius: 5px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6); /* Darker shadow */
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.product-item img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 5px;
+}
+
+.product-item h3 {
+  margin: 15px 0;
+  color: #ff9933; /* Bhagwa color for product names */
+}
+
+.product-item p {
+  margin: 10px 0;
+  color: #b3b3b3; /* Slightly lighter text color for descriptions */
+}
+
+.product-item strong {
+  color: #e0e0e0; /* Light text color for price */
+  font-size: 1.2em;
+}
+
+.product-item button {
+  padding: 10px 20px;
+  background-color: #ff9933; /* Bhagwa background */
+  color: #1a1a1a; /* Dark text color for button */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.product-item button:hover {
+  background-color: #e68a00; /* Slightly darker Bhagwa color for hover */
+}
+
+.product-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.8); /* Darker shadow on hover */
+}
+
+.shopping-cart {
+  background-color: #2c2c2c; /* Dark background for shopping cart */
+  padding: 20px;
+  border: 1px solid #ff9933; /* Bhagwa border */
+  border-radius: 5px;
+}
+
+.cart-items {
+  margin-bottom: 20px;
+}
+
+.checkout-btn {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #ff9933; /* Bhagwa background */
+  color: #1a1a1a; /* Dark text color for button */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.checkout-btn:hover {
+  background-color: #e68a00; /* Slightly darker Bhagwa color for hover */
+}
+
+.cart-items {
+  margin-bottom: 20px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+.cart-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #FF9933; /* Bhagwa border */
+}
+
+.cart-item p {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.cart-item button {
+    padding: 5px 10px;
+    background-color: #FF9933; /* Bhagwa background */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 0 5px;
+}
+
+.cart-item button:hover {
+    background-color: #e68a00; /* Slightly darker Bhagwa color */
+}
