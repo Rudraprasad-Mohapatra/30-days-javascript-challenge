@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="./profile.css">
+</head>
+
+<body>
+    <header>
+        <h1>User Profile</h1>
+        <button id="theme-switcher">Switch Theme</button>
+    </header>
+    <main>
+        <section class="profile-container">
+            <div class="profile-picture">
+                <img id="profile-pic" src="" alt="Profile Picture">
+                <input type="file" id="upload-pic" accept="image/*" autocomplete="on">
+            </div>
+            <form id="profile-form">
+                <label for="profile-username">Username</label>
+                <input type="text" id="profile-username" name="username" required autocomplete="on">
+
+                <label for="profile-email">Email</label>
+                <input type="email" id="profile-email" name="email" required autocomplete="on">
+
+                <button type="submit">Update Profile</button>
+            </form>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Your Name</p>
+    </footer>
+    <script src="./script.js"></script>
+</body>
+<script>
+
+    document.getElementById("profile-form").addEventListener("submit", updateUserProfile)
+    // Update Profile
+    function updateUserProfile(event) {
+        event.preventDefault();
+
+        const username = document.getElementById("profile-username").value;
+        const email = document.getElementById("profile-email").value;
+        const profilePic = document.getElementById("profile-pic").src;
+
+        // Validate inputs
+        if (!username || !email) {
+            alert("Both username and email are required.");
+            return;
+        }
+
+        // Update Local Storage and Session Storage
+        let users = JSON.parse(localStorage.getItem("users")) || [];
+        let loggedInUser = JSON.parse(sessionStorage.getItem("loggedInUser"));
+
+        // Find the user and update their information
+        users = users.map((user) => {
+            if (user.username === loggedInUser.username) {
+                return { ...user, username, email, profilePic };
+            }
+            return user;
+        });
+
+        loggedInUser = { ...loggedInUser, username, email, profilePic };
+
+        // Update the storages
+        localStorage.setItem("users", JSON.stringify(users));
+        sessionStorage.setItem("loggedInUser", JSON.stringify(loggedInUser));
+
+        alert("Profile updated successfully!");
+    }
+
+    // Handle Profile Picture Upload
+    document.getElementById("upload-pic").addEventListener("change", function () {
+        const reader = new FileReader();
+        reader.onload = function () {
+            document.getElementById("profile-pic").src = reader.result;
+        };
+        reader.readAsDataURL(this.files[0]);
+    });
+
+    function loadUserProfile() {
+        const loggedInUser = JSON.parse(sessionStorage.getItem("loggedInUser"));
+
+        if (loggedInUser) {
+            document.getElementById("profile-username").value = loggedInUser.username;
+            document.getElementById("profile-email").value = loggedInUser.email;
+
+            if (loggedInUser.profilePic) {
+                document.getElementById("profile-pic").src = loggedInUser.profilePic;
+            }
+        } else {
+            alert("You are not logged in!");
+            window.location.href = "login.html";
+        }
+    }
+
+    document.onload = function () {
+        loadUserProfile();
+    }
+    window.onload = function () {
+        loadUserProfile();
+    }
+</script>
+
+</html>

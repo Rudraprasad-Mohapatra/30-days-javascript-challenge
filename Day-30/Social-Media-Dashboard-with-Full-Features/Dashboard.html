@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+
+<body>
+    <header>
+        <h1>Social Media Dashboard</h1>
+        <button id="theme-switcher">Switch Theme</button>
+        <button id="notifications-button" title="No notifications">Notifications (0)</button>
+        <a href="profile.html">
+            <aside class="user-profile-header">
+                <div class="profile-picture" id="profile-picture">
+                    <img src="" alt="User Profile Picture">
+                    <span class="username-tooltip" id="username-tooltip">Username</span>
+                </div>
+            </aside>
+        </a>
+    </header>
+
+    <main style="display: flex; flex-direction: column;">
+        <!-- New Post Form -->
+        <div class="new-post-form">
+            <h2>Create a New Post</h2>
+            <form id="post-form">
+                <label for="post-text">Post Text:</label>
+                <textarea id="post-text" name="post-text" rows="4" placeholder="What's on your mind?"></textarea>
+
+                <label for="post-image">Upload Image:</label>
+                <input type="file" id="post-image" name="post-image" accept="image/*">
+
+                <button type="submit">Post</button>
+            </form>
+        </div>
+
+        <div class="posts-container">
+            <!-- Example of a single post -->
+            <div class="post">
+                <h3>Username</h3>
+                <p>This is a sample post content.</p>
+                <!-- Post actions -->
+                <div class="post-actions">
+                    <button class="like-button">Like</button>
+                    <button class="comment-button">Comment</button>
+                </div>
+
+                <!-- Comments Container -->
+                <div class="comments-container">
+                    <!-- Existing comments will be displayed here -->
+                    <p>User1: This is a sample comment.</p>
+                </div>
+
+                <!-- Comment Box -->
+                <div class="comment-box">
+                    <textarea placeholder="Write a comment..." rows="2"></textarea>
+                    <button class="submit-comment-button">Submit</button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+    <script src="./script.js"></script>
+</body>
+<script>
+    // Redirect to Profile Page
+    document.getElementById('profile-picture').addEventListener('click', function () {
+        window.location.href = 'profile.html';
+    });
+
+
+    // Load username
+    function loadUserProfileHeader() {
+        console.log("Hii")
+        const loggedInUser = JSON.parse(sessionStorage.getItem("loggedInUser"));
+
+        if (loggedInUser) {
+            if (loggedInUser.profilePic) {
+                document.querySelector("#profile-picture img").src = loggedInUser.profilePic;
+                document.getElementById('username-tooltip').textContent = loggedInUser.username;
+            }
+        } else {
+            alert("You are not logged in!");
+            window.location.href = "login.html";
+        }
+    }
+
+    // Function to handle form submission and create a new post
+
+    // Handle Upload Image Upload
+    let newPostImageUrl = "";
+    document.getElementById("post-image").addEventListener("change", function () {
+        const reader = new FileReader();
+        reader.onload = function () {
+            newPostImageUrl = reader.result;
+        };
+        reader.readAsDataURL(this.files[0]);
+    });
+
+    function handlePostSubmission(event) {
+        event.preventDefault();
+
+        const postText = document.getElementById("post-text").value;
+        const postImage = document.getElementById("post-image").files[0];
+        const loggedInUser = JSON.parse(sessionStorage.getItem("loggedInUser"));
+
+        if (!postText) {
+            alert("Post text is required.");
+            return;
+        }
+
+        // Create a new post object
+        const newPost = {
+            text: postText,
+            image: newPostImageUrl,
+            timestamp: new Date().toISOString(),
+            likes: 0,
+            comments: [],
+            owner: loggedInUser.username
+        };
+
+        // Update the current user's posts
+        let users = JSON.parse(localStorage.getItem("users")) || [];
+        let user = users.find(user => user.username === loggedInUser.username);
+
+        if (!user) {
+            alert("User not found.");
+            return;
+        }
+
+        user.posts = user.posts || []; // Initialize posts array if not present
+        user.posts.push(newPost);
+
+        // Notify other users
+        users.forEach(otherUser => {
+            if (otherUser.username !== loggedInUser.username) {
+                updateNotificationCount(otherUser.username);
+            }
+        });
+
+        // Save updated user data to localStorage
+        localStorage.setItem("users", JSON.stringify(users));
+
+        // Update session storage
+        sessionStorage.setItem("loggedInUser", JSON.stringify(user));
+
+        // Clear the form fields
+        document.getElementById("post-text").value = "";
+        document.getElementById("post-image").value = "";
+
+        // Display the new post
+        displayPosts();
+    }
+
+    // Function to display posts in the feed
+    function displayPosts() {
+        const postsContainer = document.querySelector(".posts-container");
+        postsContainer.innerHTML = ""; // Clear existing posts
+
+        const loggedInUser = JSON.parse(sessionStorage.getItem("loggedInUser"));
+        const users = JSON.parse(localStorage.getItem("users")) || [];
+
+        const user = users.find(user => user.username === loggedInUser.username);
+
+
+        users.forEach(user => {
+            if (user.posts) {
+                user.posts.forEach((post, index) => {
+                    const postElement = document.createElement("div");
+                    postElement.classList.add("post");
+                    if (user.username === loggedInUser.username) {
+                        postElement.classList.add("logged-in-user");
+                    } else {
+                        postElement.classList.add("other-user");
+                    }
+
+                    const postContent = `
+                    <h3>${user.username}</h3>
+                    <p>${post.text}</p>
+                    ${post.image ? `<img src="${post.image}" alt="Post Image">` : ""}
+                    <small>${new Date(post.timestamp).toLocaleString()}</small>
+                    <div class="post-actions">
+                        <button class="like-button" data-username="${user.username}" data-index="${index}">Like (${post.likes})</button>
+                    </div>
+                    <div class="comments-container">
+                        ${post.comments.map(comment => `<p>${comment}</p>`).join('')}
+                    </div>
+                    <div class="comment-box">
+                        <textarea placeholder="Write a comment..." rows="2"></textarea>
+                        <button class="comment-button" data-username="${user.username}" data-index="${index}">Comment</button>
+                    </div>
+                `;
+
+                    postElement.innerHTML = postContent;
+                    postsContainer.appendChild(postElement);
+                });
+            }
+        });
+
+        // Add event listeners to new buttons
+        document.querySelectorAll(".like-button").forEach(button => {
+            button.addEventListener("click", handleLike);
+        });
+
+        document.querySelectorAll(".comment-button").forEach(button => {
+            button.addEventListener("click", handleComment);
+        });
+    }
+
+    // Event Listener for Post Form Submission
+    document.querySelector("#post-form").addEventListener("submit", handlePostSubmission);
+
+    // Display posts when the page loads
+    document.addEventListener("DOMContentLoaded", displayPosts);
+
+    // Update notification count for a specific user
+    function updateNotificationCount(username) {
+        let users = JSON.parse(localStorage.getItem("users")) || [];
+        let user = users.find(user => user.username === username);
+
+        if (user) {
+            user.notifications = (user.notifications || 0) + 1;
+            localStorage.setItem("users", JSON.stringify(users));
+            // Update tooltip and session storage
+            const notificationsButton = document.getElementById('notifications-button');
+            notificationsButton.title = `You have ${user.notifications} new notifications`;
+            notificationsButton.textContent = `Notifications (${user.notifications})`;
+            sessionStorage.setItem('notifications', JSON.stringify(user.notifications));
+        }
+    }
+    // Handle post submission and update notifications
+    function handlePostSubmission(event) {
+        event.preventDefault();
+        const postText = document.getElementById("post-text").value;
+        const postImage = document.getElementById("post-image").files[0];
+        const loggedInUser = JSON.parse(sessionStorage.getItem("loggedInUser"));
+
+        if (!postText) {
+            alert("Post text is required.");
+            return;
+        }
+
+        const newPost = {
+            text: postText,
+            image: newPostImageUrl,
+            timestamp: new Date().toISOString(),
+            likes: 0,
+            comments: []
+        };
+
+        let users = JSON.parse(localStorage.getItem("users")) || [];
+        let user = users.find(user => user.username === loggedInUser.username);
+
+        if (!user) {
+            alert("User not found.");
+            return;
+        }
+
+        user.posts = user.posts || [];
+        user.posts.push(newPost);
+
+        // Notify other users
+        users.forEach(otherUser => {
+            if (otherUser.username !== loggedInUser.username) {
+                updateNotificationCount(otherUser.username);
+            }
+        });
+
+        localStorage.setItem("users", JSON.stringify(users));
+        sessionStorage.setItem("loggedInUser", JSON.stringify(user));
+
+        document.getElementById("post-text").value = "";
+        document.getElementById("post-image").value = "";
+
+        displayPosts();
+    }
+
+    // Function to handle liking a post
+    function handleLike(event) {
+        const postIndex = event.target.dataset.index;
+        const postOwner = event.target.dataset.username;
+        const loggedInUser = JSON.parse(sessionStorage.getItem("loggedInUser"));
+        let users = JSON.parse(localStorage.getItem("users")) || [];
+        let user = users.find(user => user.username === loggedInUser.username);
+        let postOwnerUser = users.find(user => user.username === postOwner);
+
+        if (!user || postOwnerUser == null || user.posts[postIndex] == null) {
+            alert("Post not found.");
+            return;
+        }
+
+        // Update like count for the post
+        if (postOwnerUser.posts[postIndex]) {
+            postOwnerUser.posts[postIndex].likes = (postOwnerUser.posts[postIndex].likes || 0) + 1;
+        }
+
+        // Update notification count for the post owner
+        updateNotificationCount(postOwner);
+
+        // Save updates to localStorage and sessionStorage
+        localStorage.setItem("users", JSON.stringify(users));
+        sessionStorage.setItem("loggedInUser", JSON.stringify(user));
+
+        // Redisplay posts
+        displayPosts();
+    }
+
+    // Function to handle adding a comment to a post
+    function handleComment(event) {
+        const postIndex = event.target.dataset.index;
+        const postOwner = event.target.dataset.username;
+        const commentBox = event.target.previousElementSibling;
+        const comment = commentBox.value.trim();
+        const loggedInUser = JSON.parse(sessionStorage.getItem("loggedInUser"));
+
+        if (comment) {
+            let users = JSON.parse(localStorage.getItem("users")) || [];
+            let user = users.find(user => user.username === loggedInUser.username);
+            let postOwnerUser = users.find(user => user.username === postOwner);
+
+            if (user && postOwnerUser && postOwnerUser.posts[postIndex]) {
+                postOwnerUser.posts[postIndex].comments.push(comment);
+
+                // Update notification count for the post owner
+                updateNotificationCount(postOwner);
+
+                // Save updates to localStorage and sessionStorage
+                localStorage.setItem("users", JSON.stringify(users));
+                sessionStorage.setItem("loggedInUser", JSON.stringify(user));
+
+                // Redisplay posts
+                displayPosts();
+            } else {
+                alert("Post not found.");
+            }
+        }
+    }
+
+    // Load and display notifications
+    function loadNotifications() {
+        const loggedInUser = JSON.parse(sessionStorage.getItem("loggedInUser"));
+        if (loggedInUser) {
+            const notificationsButton = document.getElementById("notifications-button");
+            notificationsButton.textContent = `Notifications (${loggedInUser.notifications || 0})`;
+            notificationsButton.title = `You have ${loggedInUser.notifications || 0} notifications`;
+        }
+    }
+
+    // Handle notifications click
+    document.getElementById('notifications-button').addEventListener('click', function () {
+        const loggedInUser = JSON.parse(sessionStorage.getItem("loggedInUser"));
+        let users = JSON.parse(localStorage.getItem("users")) || [];
+        let user = users.find(user => user.username === loggedInUser.username);
+
+        if (user) {
+            user.notifications = 0;
+            localStorage.setItem("users", JSON.stringify(users));
+            document.getElementById('notifications-button').textContent = `Notifications (0)`;
+            sessionStorage.setItem('notifications', JSON.stringify(0));
+        }
+    });
+    // Load notifications on page load
+    // Load all functionality when the page loads
+    window.onload = function () {
+        loadUserProfileHeader();
+        loadNotifications();
+        displayPosts();
+    };
+
+
+
+</script>
+
+</html>

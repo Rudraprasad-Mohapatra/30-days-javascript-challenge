@@ -1,0 +1,176 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #f4f4f4;
+    color: #333;
+    line-height: 1.6;
+    padding: 20px;
+}
+
+body.dark-theme {
+    background-color: #1e1e1e;
+    color: #ddd;
+}
+
+/* Header Styles */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+button#theme-switcher {
+    background-color: #555;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button#theme-switcher:hover {
+    background-color: #333;
+}
+
+body.dark-theme button#theme-switcher {
+    background-color: #ddd;
+    color: #333;
+}
+
+body.dark-theme button#theme-switcher:hover {
+    background-color: #bbb;
+}
+
+/* Profile Container */
+.profile-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+body.dark-theme .profile-container {
+    background-color: #333;
+    box-shadow: 0 2px 4px rgba(255, 255, 255, 0.1);
+}
+
+/* Profile Picture */
+.profile-picture {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-bottom: 20px;
+    flex-shrink: 0;
+}
+
+.profile-picture img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#upload-pic {
+    display: block;
+    margin-top: 10px;
+    background-color: #007bff;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#upload-pic:hover {
+    background-color: #0056b3;
+}
+
+body.dark-theme #upload-pic {
+    background-color: #0056b3;
+}
+
+body.dark-theme #upload-pic:hover {
+    background-color: #004085;
+}
+
+/* Profile Form */
+#profile-form {
+    display: flex;
+    flex-direction: column;
+    width: calc(100% - 120px);
+}
+
+#profile-form label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+#profile-form input {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+body.dark-theme #profile-form input {
+    background-color: #444;
+    color: #fff;
+    border: 1px solid #555;
+}
+
+#profile-form button {
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#profile-form button:hover {
+    background-color: #218838;
+}
+
+body.dark-theme #profile-form button {
+    background-color: #1c7430;
+}
+
+body.dark-theme #profile-form button:hover {
+    background-color: #155724;
+}
+
+/* Footer Styles */
+footer {
+    margin-top: 20px;
+    text-align: center;
+}
+
+footer p {
+    color: #777;
+}
+
+body.dark-theme footer p {
+    color: #bbb;
+}
